@@ -1,0 +1,27 @@
+{
+  "name": "bamazonStore",
+  "version": "1.0.0",
+  "description": "Simple online store",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pensadotech/bamazonStore.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pensadotech/bamazonStore/issues"
+  },
+  "homepage": "https://github.com/pensadotech/bamazonStore#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mysql2": "^1.6.1",
+    "sequelize": "^4.41.0"
+  }
+}
