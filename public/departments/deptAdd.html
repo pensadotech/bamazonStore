@@ -53,7 +53,7 @@
 
   <div class="container">
 
-    <h2>Department Info</h2>
+    <h2>New Department Info</h2>
     <form>
       <div class="form-group">
         <label for="deptName">Name <span class="inputErrors" id="deptNameErr"></span></label>
@@ -64,7 +64,7 @@
         <input type="number" class="form-control" name="deptOverheadCosts" id="deptOverheadCosts" placeholder="Department overhead costs..">
       </div>
       <button type="submit" class="btn btn-primary" onclick="addDept()">Add</button>
-      <button type="submit" class="btn btn-danger" onclick="cancelUpdate()"> Cancel</button>
+      <button type="submit" class="btn btn-danger" onclick="cancelAction()">Cancel</button>
     </form>
 
   </div>
@@ -80,7 +80,7 @@
 
   <script>
 
-    const cancelUpdate = () => {
+    const cancelAction = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
       // relocate (how to pass a parameter on new location? )

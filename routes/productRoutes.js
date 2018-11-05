@@ -4,35 +4,49 @@ const db = require('../models')
 module.exports = (app) => {
 
   // find all
-  app.get("/products", (req, res) => {
+  app.get("/prodcts", (req, res) => {
     db.products.findAll({})
       .then(r => res.json(r))
       .catch(e => console.error(e))
   })
 
   // find one 
-  app.get('/products/:name', (req, res) => {
+  app.get('/prodcts/:id', (req, res) => {
     db.products.findOne({
         where: {
-          Name: req.params.name
+          id: req.params.id
         }
       })
       .then(r => res.json(r))
       .catch(e => console.error(e))
   })
 
+  // find all prod for a department 
+  app.get('/dept-prodcts/:id', (req, res) => {
+    db.products.findAll({
+        where: {
+          departmentId: req.params.id
+        }
+      })
+      .then(r => res.json(r))
+      .catch(e => console.error(e))
+  })
+
+
+
+
   // create record
-  app.post('/products', (req, res) => {
+  app.post('/prodcts', (req, res) => {
     db.products.create(req.body)
       .then(() => res.sendStatus(200))
       .catch(e => console.error(e))
   })
 
   // update record
-  app.put('/products/:name', (req, res) => {
+  app.put('/prodcts/:id', (req, res) => {
     db.products.update(req.body, {
         where: {
-          Name: req.params.name
+          id: req.params.id
         }
       })
       .then(() => res.sendStatus(200))
@@ -40,10 +54,10 @@ module.exports = (app) => {
   })
 
   // delete one
-  app.delete('/products/:name', (req, res) => {
+  app.delete('/prodcts/:id', (req, res) => {
     db.products.destroy({
         where: {
-          Name: req.params.name
+          id: req.params.id
         }
       })
       .then(() => res.sendStatus(200))
@@ -51,7 +65,7 @@ module.exports = (app) => {
   })
 
   // delete all
-  app.delete('/products', (req, res) => {
+  app.delete('/prodcts', (req, res) => {
     db.products.destroy({
         where: {},
         truncate: true

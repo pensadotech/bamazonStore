@@ -22,16 +22,6 @@ module.exports = (app) => {
       .catch(e => console.error(e))
   })
 
-  app.get('/deptsbyname/:name', (req, res) => {
-    db.departments.findOne({
-        where: {
-          name: req.params.id
-        }
-      })
-      .then(r => res.json(r))
-      .catch(e => console.error(e))
-  })
-
   // create record
   app.post('/depts', (req, res) => {
     db.departments.create(req.body)
@@ -52,6 +42,8 @@ module.exports = (app) => {
 
   // delete one
   app.delete('/depts/:id', (req, res) => {
+    // todo: How to delete all products for a department?
+    //        Cannot truncate a table referenced in a foreign key constraint
     db.departments.destroy({
         where: {
           id: req.params.id

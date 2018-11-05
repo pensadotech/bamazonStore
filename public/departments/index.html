@@ -54,6 +54,7 @@
   <div class="container">
 
     <ul id="deptList">
+      <!-- Departments will be listed here -->
     </ul>
 
   </div>
@@ -87,16 +88,21 @@
         .then(r => r.json())
         .then(r => {
           document.querySelector('#deptList').innerHTML = ''
-          r.forEach(depto => {
+          r.forEach(dept => {
             let listItem = document.createElement('li')
             listItem.innerHTML =
               ` <div class="row">
-                   <div class="col-sm-6">                             
-                      <p class="d-inline">Department: <span>${depto.Name}</span> / Overhead Costs: <span>${depto.OverheadCosts}</span> </p>
+                   <div class="col-sm-9">                             
+                      <div class="card">
+                       <div class="card-body">
+                         <h5 class="card-title">Department: ${dept.Name}</h5>
+                         <p class="card-text">Overhead Costs: ${dept.OverheadCosts}</p> 
+                      </div>
+                     </div>
                    </div>
-                   <div class="col-sm-4">
-                      <button id="updBnt" class="btn btn-primary" value=${depto.id}>Edit</button>
-                      <button id="dltBnt" class="btn btn-primary" value=${depto.id}>Remove</button>
+                   <div class="col-sm-3">
+                      <button id="updBnt" class="btn btn-primary" value=${dept.id}>Edit</button>
+                      <button id="dltBnt" class="btn btn-primary" value=${dept.id}>Remove</button>
                    </div>
               </div>
               `

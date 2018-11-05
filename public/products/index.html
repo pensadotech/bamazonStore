@@ -56,10 +56,7 @@
       <div class="row">
         <div class="col-sm-3">
           <select class="form-control" id="deptList" onchange="selectChange()">
-            <!-- <option value="all">All Departments</option>
-              <option value="d1">Dept-1</option>
-              <option value="d2">Dept-2</option>
-              <option value="d3">Dept-3</option> -->
+            <!-- department options for selector -->
           </select>
         </div>
         <div class="col-sm-5">
@@ -75,7 +72,8 @@
 
   <div class="container">
 
-    <ul id="deptList">
+    <ul id="prodsList">
+      <!-- Products will be luisted here -->
     </ul>
 
   </div>
@@ -89,6 +87,9 @@
   <script src="../scripts/app.js"></script>
 
   <script>
+    // keep a collection of incoming departments
+    let deptArr = []
+
     document.addEventListener('click', e => {
       console.log(e.target)
       if (e.target && e.target.id === 'updBnt') {
@@ -102,7 +103,7 @@
         window.location = `./prods-delete?id=${e.target.value}`
       }
     })
-    
+
     const getDepartments = () => {
       fetch('/depts')
         .then(r => r.json())
@@ -113,9 +114,15 @@
           listOption.innerHTML = `<option data-value="all">All Departments</option>`
           document.querySelector('#deptList').appendChild(listOption)
 
-          r.forEach(depto => {
+          r.forEach(dept => {
+            // add department to array
+            deptArr.push({
+              id: dept.id,
+              name: dept.Name
+            })
+            // add department name to selector
             let listOption = document.createElement('option')
-            listOption.innerHTML = `<option data-value="${depto.Id}">${depto.Name}</option>`
+            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.Name}</option>`
             document.querySelector('#deptList').appendChild(listOption)
           });
         })
@@ -125,14 +132,103 @@
 
     const getProducts = () => {
 
-       console.log('getprods')
-       
-       //TODO: get all products and display 
+      fetch('/prodcts')
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#prodsList').innerHTML = ''
+          r.forEach(product => {
+            let listItem = document.createElement('li')
+            listItem.innerHTML =
+              ` <div class="row">
+                   <div class="col-sm-9">                             
+                      <div class="card">
+                       <div class="card-body">
+                         <h5 class="card-title">Name: ${product.Name}</h5>
+                         <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.invenntory}</h6>
+                         <p class="card-text">Description: ${product.description}</p>
+                         <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.Price} / Stock: ${product.StockQty}</p> 
+                      </div>
+                     </div>
+                   </div>
+                   <div class="col-sm-3">
+                      <button id="updBnt" class="btn btn-primary" value=${product.id}>Edit</button>
+                      <button id="dltBnt" class="btn btn-primary" value=${product.id}>Remove</button>
+                   </div>
+              </div>
+              `
+            document.querySelector('#prodsList').appendChild(listItem)
+          });
+        })
+        .catch(e => console.error(e))
+    }
+
+    const getProductsByDept = (deptId) => {
+
+      fetch(`/dept-prodcts/${deptId}`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#prodsList').innerHTML = ''
+          r.forEach(product => {
+            let listItem = document.createElement('li')
+            listItem.innerHTML =
+              ` <div class="row">
+            <div class="col-sm-9">                             
+               <div class="card">
+                 <div class="card-body">
+                   <h5 class="card-title">Name: ${product.Name}</h5>
+                   <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.invenntory}</h6>
+                   <p class="card-text">Description: ${product.description}</p>
+                   <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.Price} / Stock: ${product.StockQty}</p> 
+                 </div>
+              </div>
+           </div>
+         <div class="col-sm-3">
+            <button id="cartBnt" class="btn btn-primary" value=${product.id}>Add to Cart</button>
+         </div>
+       </div>
+       `
+            document.querySelector('#prodsList').appendChild(listItem)
+          });
+        })
+        .catch(e => console.error(e))
+    }
+
+    // Filter prod in screen by deparment
+    const selectChange = () => {
+
+      if (document.getElementById("deptList").value === 'All Departments') {
+        getProducts()
+      } else {
+        let deptId = getDeptId(document.getElementById("deptList").value)
+        getProductsByDept(deptId)
+      }
     }
 
     getDepartments()
     getProducts()
 
+    // General funciton................................................
+    function getDeptId(deptName) {
+      let deptId = undefined
+      deptArr.forEach(dept => {
+        console.log(dept)
+        if (deptName === dept.name) {
+          deptId = dept.id
+        }
+      });
+      return deptId
+    }
+
+    function getDeptName(deptId) {
+      deptId = parseInt(deptId)
+      let deptName = undefined
+      deptArr.forEach(dept => {
+        if (deptId === parseInt(dept.id)) {
+          deptName = dept.name
+        }
+      });
+      return deptName
+    }
   </script>
 
 </body>

@@ -53,7 +53,7 @@
 
   <div class="container">
 
-    <h2>Department Info</h2>
+    <h2>Update Department Info</h2>
     <form>
       <div class="form-group">
         <label for="deptName">Name <span class="inputErrors" id="deptNameErr"></span></label>
@@ -64,7 +64,7 @@
         <input type="number" class="form-control" name="deptOverheadCosts" id="deptOverheadCosts" placeholder="Department overhead costs..">
       </div>
       <button type="submit" class="btn btn-primary" onclick="updateDept()">Update</button>
-      <button type="submit" class="btn btn-danger" onclick="cancelUpdate()"> Cancel</button>
+      <button type="submit" class="btn btn-danger" onclick="cancelAction()"> Cancel</button>
     </form>
 
   </div>
@@ -79,16 +79,15 @@
   <script src="../scripts/app.js"></script>
 
   <script>
-    const cancelUpdate = () => {
+    // cancle action
+    const cancelAction = () => {
       // override form-submit default behavior
       event.preventDefault()
-      // clear screen
-      document.querySelector('#deptName').value = ''
-      document.querySelector('#deptOverheadCosts').value = ''
       // relocate (how to pass a parameter on new location? )
       window.location = './depmts'
     }
-
+    
+    // update record
     const updateDept = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
@@ -125,7 +124,7 @@
       }
     }
 
-
+    // get from DB the selected item and displa
     const getSelectedItem = (itemId) => {
       // get selected item 
       fetch(`/depts/${itemId}`)
@@ -136,8 +135,10 @@
         })
         .catch(e => console.error(e))
     }
-
+    
+    // get ID passed in URL
     let selectedId = getUrlParameter()
+    // bring the selected item for display
     getSelectedItem(selectedId)
 
     function getUrlParameter() {
