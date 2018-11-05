@@ -42,23 +42,39 @@
             <a class="nav-link" href="/depmts">Departments</a>
           </li>
           <li class="nav-item ml-auto">
-            <a class="nav-link" href="">Product Mgmt</a>
+            <a class="nav-link" href="/prods">Product Mgmt</a>
           </li>
         </ul>
       </div>
     </nav>
-    
+
   </header>
   <!-- header end -->
+
   <div class="searchBar">
     <form>
-      <input id="searchProduct" type="text" name="product" placehoder="item to search">
-      <button onclick="findTodo()"><i class="fas fa-search"></i></button>
+      <div class="row">
+        <div class="col-sm-3">
+          <select class="form-control" id="deptList" onchange="selectChange()">
+            <!-- <option value="all">All Departments</option>
+            <option value="d1">Dept-1</option>
+            <option value="d2">Dept-2</option>
+            <option value="d3">Dept-3</option> -->
+          </select>
+        </div>
+        <div class="col-sm-5">
+          <!-- Nothing here (need to do a shift 5 instead) -->
+        </div>
+        <div class="col-sm-4">
+          <input id="searchProduct" type="text" name="product" placehoder="item to search">
+          <button onclick="findTodo()"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
     </form>
   </div>
 
   <div class="container">
-   
+
 
   </div>
   <!-- end container -->
@@ -66,10 +82,47 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
 
   <script src="./scripts/app.js"></script>
+
+  <script>
+    const selectChange = () => {
+
+      console.log("ping-select")
+      console.log(document.getElementById("deptList").value)
+      
+      // TODO: Filter prod by deparment
+
+    }
+
+
+    const getDepartments = () => {
+      fetch('/depts')
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#deptList').innerHTML = ''
+
+          let listOption = document.createElement('option')
+          listOption.innerHTML = `<option data-value="all">All Departments</option>`
+          document.querySelector('#deptList').appendChild(listOption)
+
+          r.forEach(depto => {
+            let listOption = document.createElement('option')
+            listOption.innerHTML = `<option data-value="${depto.Id}">${depto.Name}</option>`
+            document.querySelector('#deptList').appendChild(listOption)
+          });
+        })
+        .catch(e => console.error(e))
+    }
+
+
+    getDepartments()
+
+  </script>
 
 </body>
 

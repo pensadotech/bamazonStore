@@ -51,15 +51,20 @@
   </header>
   <!-- header end -->
 
-  <div class="searchBar">
-    <form>
-      <input id="searchProduct" type="text" name="product" placehoder="item to search">
-      <button onclick="findTodo()"><i class="fas fa-search"></i></button>
-    </form>
-  </div>
-
   <div class="container">
 
+    <div>
+      <div class="row">
+        <label>Name: </label>
+        <label id="deptName"></label>
+      </div>
+      <div class="row">
+        <label>Overhead Costs: </label>
+        <label id="deptOverheadCosts"></label>
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="deleteDept()">Delete</button>
+      <button type="submit" class="btn btn-danger" onclick="cancelUpdate()">Cancel</button>
+    </div>
 
   </div>
   <!-- end container -->
@@ -71,6 +76,49 @@
     crossorigin="anonymous"></script>
 
   <script src="../scripts/app.js"></script>
+
+  <script>
+    const cancelUpdate = () => {
+      // oveeride form-submit defualt behavior
+      event.preventDefault()
+      // relocate (how to pass a parameter on new location? )
+      window.location = './depmts'
+    }
+
+    const deleteDept = () => {
+      // oveeride form-submit defualt behavior
+      event.preventDefault()
+      
+      fetch(`/depts/${selectedId}`, { method: 'DELETE'})
+          .then(r => {
+            window.location = './depmts'
+          })
+          .catch(e => console.error(e))
+    }
+
+    const getSelectedItem = (itemId) => {
+      // get selected item 
+      fetch(`/depts/${itemId}`)
+        .then(r => r.json())
+        .then(r => {
+          document.querySelector('#deptName').innerHTML = r.Name
+          document.querySelector('#deptOverheadCosts').innerHTML = r.OverheadCosts
+        })
+        .catch(e => console.error(e))
+    }
+
+
+    let selectedId = getUrlParameter()
+    getSelectedItem(selectedId)
+
+    function getUrlParameter() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+      });
+      return parseInt(vars.id)
+    }
+  </script>
 
 </body>
 

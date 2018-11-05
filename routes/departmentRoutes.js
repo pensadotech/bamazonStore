@@ -22,6 +22,16 @@ module.exports = (app) => {
       .catch(e => console.error(e))
   })
 
+  app.get('/deptsbyname/:name', (req, res) => {
+    db.departments.findOne({
+        where: {
+          name: req.params.id
+        }
+      })
+      .then(r => res.json(r))
+      .catch(e => console.error(e))
+  })
+
   // create record
   app.post('/depts', (req, res) => {
     db.departments.create(req.body)
@@ -41,10 +51,10 @@ module.exports = (app) => {
   })
 
   // delete one
-  app.delete('/depts/:name', (req, res) => {
+  app.delete('/depts/:id', (req, res) => {
     db.departments.destroy({
         where: {
-          Name: req.params.name
+          id: req.params.id
         }
       })
       .then(() => res.sendStatus(200))
