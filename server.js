@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true }))
 app.use(bodyParser.json())
  
 // Routes
-// require("./routes")(app);
+require("./routes")(app);
 
 // sync DB and listen
 require('./models').sequelize.sync().then(() => {

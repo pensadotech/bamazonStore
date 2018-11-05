@@ -4,35 +4,36 @@ const db = require('../models')
 module.exports = (app) => {
 
   // find all
-  app.get("/departments", (req, res) => {
+  app.get("/depts", (req, res) => {
+    console.log('ping')
     db.departments.findAll({})
       .then(r => res.json(r))
       .catch(e => console.error(e))
   })
 
   // find one
-  app.get('/departments/:name', (req, res) => {
+  app.get('/depts/:id', (req, res) => {
     db.departments.findOne({
         where: {
-          Name: req.params.name
+          id: req.params.id
         }
       })
       .then(r => res.json(r))
       .catch(e => console.error(e))
   })
 
-  // create recaord
-  app.post('/departments', (req, res) => {
+  // create record
+  app.post('/depts', (req, res) => {
     db.departments.create(req.body)
       .then(() => res.sendStatus(200))
       .catch(e => console.error(e))
   })
 
   // update record
-  app.put('/departments/:name', (req, res) => {
+  app.put('/depts/:id', (req, res) => {
     db.departments.update(req.body, {
         where: {
-          Name: req.params.name
+          id: req.params.id
         }
       })
       .then(() => res.sendStatus(200))
@@ -40,7 +41,7 @@ module.exports = (app) => {
   })
 
   // delete one
-  app.delete('/departments/:name', (req, res) => {
+  app.delete('/depts/:name', (req, res) => {
     db.departments.destroy({
         where: {
           Name: req.params.name
@@ -51,7 +52,7 @@ module.exports = (app) => {
   })
 
   // delete all
-  app.departments('/departments', (req, res) => {
+  app.delete('/depts', (req, res) => {
     db.departments.destroy({
         where: {},
         truncate: true

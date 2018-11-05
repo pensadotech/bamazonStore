@@ -3,7 +3,7 @@ module.exports = (sequelize,DataTypes) => {
 
   let Department = sequelize.define('departments', {
     Name: DataTypes.STRING,
-    OverHeadCosts: DataTypes.FLOAT
+    OverheadCosts: DataTypes.FLOAT
   }, {
     // Model tableName will be the same as the model name instead of being pluralized
     freezeTableName: true
