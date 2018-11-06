@@ -91,12 +91,10 @@
     let deptArr = []
 
     document.addEventListener('click', e => {
-      console.log(e.target)
       if (e.target && e.target.id === 'updBnt') {
         // relocate (how to pass a parameter on new location? )
         window.location = `./prods-edit?id=${e.target.value}`
       }
-
       // relocate to the delete
       if (e.target && e.target.id === 'dltBnt') {
         // relocate
@@ -118,11 +116,11 @@
             // add department to array
             deptArr.push({
               id: dept.id,
-              name: dept.Name
+              name: dept.name
             })
             // add department name to selector
             let listOption = document.createElement('option')
-            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.Name}</option>`
+            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.name}</option>`
             document.querySelector('#deptList').appendChild(listOption)
           });
         })
@@ -143,10 +141,10 @@
                    <div class="col-sm-9">                             
                       <div class="card">
                        <div class="card-body">
-                         <h5 class="card-title">Name: ${product.Name}</h5>
-                         <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.invenntory}</h6>
+                         <h5 class="card-title">Name: ${product.name}</h5>
+                         <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.inventoryNum}</h6>
                          <p class="card-text">Description: ${product.description}</p>
-                         <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.Price} / Stock: ${product.StockQty}</p> 
+                         <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.price} / Stock: ${product.stockQty}</p> 
                       </div>
                      </div>
                    </div>
@@ -175,10 +173,10 @@
             <div class="col-sm-9">                             
                <div class="card">
                  <div class="card-body">
-                   <h5 class="card-title">Name: ${product.Name}</h5>
-                   <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.invenntory}</h6>
+                   <h5 class="card-title">Name: ${product.name}</h5>
+                   <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.inventoryNum}</h6>
                    <p class="card-text">Description: ${product.description}</p>
-                   <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.Price} / Stock: ${product.StockQty}</p> 
+                   <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.price} / Stock: ${product.stockQty}</p> 
                  </div>
               </div>
            </div>

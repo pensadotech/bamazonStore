@@ -32,9 +32,6 @@ module.exports = (app) => {
       .catch(e => console.error(e))
   })
 
-
-
-
   // create record
   app.post('/prodcts', (req, res) => {
     db.products.create(req.body)

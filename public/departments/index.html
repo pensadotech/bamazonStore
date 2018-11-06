@@ -69,15 +69,13 @@
 
   <script>
     document.addEventListener('click', e => {
-      console.log(e.target)
       if (e.target && e.target.id === 'updBnt') {
-        // relocate (how to pass a parameter on new location? )
+        //  redirect to the link (how to pass a parameter on new location? )
         window.location = `./depmts-edit?id=${e.target.value}`
-      }
-      
-      // relocate to the delete
+      }  
+ 
       if (e.target && e.target.id === 'dltBnt') {
-        // relocate
+        //  redirect to the link
         window.location = `./depmts-delete?id=${e.target.value}`
       }
     })
@@ -95,8 +93,8 @@
                    <div class="col-sm-9">                             
                       <div class="card">
                        <div class="card-body">
-                         <h5 class="card-title">Department: ${dept.Name}</h5>
-                         <p class="card-text">Overhead Costs: ${dept.OverheadCosts}</p> 
+                         <h5 class="card-title">Department: ${dept.name}</h5>
+                         <p class="card-text">Overhead Costs: ${dept.overheadCosts}</p> 
                       </div>
                      </div>
                    </div>

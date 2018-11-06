@@ -5,8 +5,8 @@ CREATE DATABASE bamazon_db;
 
 -- drop tables
 use bamazon_db;
-drop table orderitems;
-drop table orders;
+drop table cartitems;
+drop table carts;
 
 use bamazon_db;
 drop table products;

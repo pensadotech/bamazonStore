@@ -83,10 +83,10 @@
     const cancelAction = () => {
       // override form-submit default behavior
       event.preventDefault()
-      // relocate (how to pass a parameter on new location? )
+      // redirect
       window.location = './depmts'
     }
-    
+
     // update record
     const updateDept = () => {
       // oveeride form-submit defualt behavior
@@ -109,13 +109,12 @@
               'Content-Type': 'application/json ; charset=utf-8'
             },
             body: JSON.stringify({
-              Name: deptName,
-              OverheadCosts: deptOverheadCosts
+              name: deptName,
+              overheadCosts: deptOverheadCosts
             })
           })
           .then(r => {
-            document.querySelector('#deptName').value = ''
-            document.querySelector('#deptOverheadCosts').value = ''
+            // redirect
             window.location = './depmts'
           })
           .catch(e => console.error(e))
@@ -124,18 +123,18 @@
       }
     }
 
-    // get from DB the selected item and displa
+    // get from DB the selected item and display
     const getSelectedItem = (itemId) => {
       // get selected item 
       fetch(`/depts/${itemId}`)
         .then(r => r.json())
         .then(r => {
-          document.querySelector('#deptName').value = r.Name
-          document.querySelector('#deptOverheadCosts').value = r.OverheadCosts
+          document.querySelector('#deptName').value = r.name
+          document.querySelector('#deptOverheadCosts').value = r.overheadCosts
         })
         .catch(e => console.error(e))
     }
-    
+
     // get ID passed in URL
     let selectedId = getUrlParameter()
     // bring the selected item for display

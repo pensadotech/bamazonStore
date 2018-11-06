@@ -105,7 +105,7 @@
     const cancelAction = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
-      // relocate (how to pass a parameter on new location? )
+      // redirect
       window.location = './prods'
     }
 
@@ -161,20 +161,16 @@
               'Content-Type': 'application/json ; charset=utf-8'
             },
             body: JSON.stringify({
-              Name: prodName,
-              invenntory: prodStocknum,
+              name: prodName,
+              inventoryNum: prodStocknum,
               description: prodDescr,
-              Price: prodPrice,
-              StockQty: prodStockQty,
+              price: prodPrice,
+              stockQty: prodStockQty,
               departmentId: deptId
             })
           })
           .then(r => {
-            document.querySelector('#prodName').value = ''
-            document.querySelector('#prodStocknum').value = ''
-            document.querySelector('#prodDescr').value = ''
-            document.querySelector('#prodPrice').value = ''
-            document.querySelector('#prodStockQty').value = ''
+            // redirect
             window.location = './prods'
           })
           .catch(e => console.error(e))
@@ -193,11 +189,11 @@
             // add department to array
             deptArr.push({
               id: dept.id,
-              name: dept.Name
+              name: dept.name
             })
             // make it an option in selector
             let listOption = document.createElement('option')
-            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.Name}</option>`
+            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.name}</option>`
             document.querySelector('#deptList').appendChild(listOption)
           });
         })
@@ -211,11 +207,11 @@
         .then(r => r.json())
         .then(r => {
           document.getElementById("deptList").value = getDeptName(r.departmentId)
-          document.querySelector('#prodName').value = r.Name
-          document.querySelector('#prodStocknum').value = r.invenntory
+          document.querySelector('#prodName').value = r.name
+          document.querySelector('#prodStocknum').value = r.inventoryNum
           document.querySelector('#prodDescr').value = r.description
-          document.querySelector('#prodPrice').value = r.Price
-          document.querySelector('#prodStockQty').value = r.StockQty
+          document.querySelector('#prodPrice').value = r.price
+          document.querySelector('#prodStockQty').value = r.stockQty
         })
         .catch(e => console.error(e))
     }

@@ -81,7 +81,7 @@
     const cancelAction = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
-      // relocate (how to pass a parameter on new location? )
+      // redirect
       window.location = './prods'
     }
 
@@ -93,6 +93,7 @@
           method: 'DELETE'
         })
         .then(r => {
+          // redirect
           window.location = './prods'
         })
         .catch(e => console.error(e))
@@ -107,7 +108,7 @@
             // add department to array
             deptArr.push({
               id: dept.id,
-              name: dept.Name
+              name: dept.name
             })
           });
         })
@@ -126,10 +127,10 @@
                    <div class="col-sm-9">                             
                       <div class="card">
                        <div class="card-body">
-                         <h5 class="card-title">Name: ${r.Name}</h5>
-                         <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${r.invenntory}</h6>
+                         <h5 class="card-title">Name: ${r.name}</h5>
+                         <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${r.inventoryNum}</h6>
                          <p class="card-text">Description: ${r.description}</p>
-                         <p class="card-text">Depmt: ${getDeptName(r.departmentId)} /  Price($): ${r.Price} / Stock: ${r.StockQty}</p> 
+                         <p class="card-text">Depmt: ${getDeptName(r.departmentId)} /  Price($): ${r.price} / Stock: ${r.stockQty}</p> 
                       </div>
                      </div>
                    </div>

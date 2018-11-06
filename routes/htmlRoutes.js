@@ -37,5 +37,10 @@ module.exports = (app) => {
     res.sendFile(path.join(__dirname, '../public/products/prodDelete.html'))
   })
 
+  // Orders ..................................................................
+  app.get('/carts', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/carts/index.html'))
+  })
+
 
 } // module.exports

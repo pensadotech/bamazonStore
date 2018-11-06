@@ -75,15 +75,14 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
-  
+
   <script src="../scripts/app.js"></script>
 
   <script>
-
     const cancelAction = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
-      // relocate (how to pass a parameter on new location? )
+      // redirect
       window.location = './depmts'
     }
 
@@ -108,13 +107,12 @@
               'Content-Type': 'application/json ; charset=utf-8'
             },
             body: JSON.stringify({
-              Name: deptName,
-              OverheadCosts: deptOverHeadCosts
+              name: deptName,
+              overheadCosts: deptOverHeadCosts
             })
           })
           .then(r => {
-            document.querySelector('#deptName').value = ''
-            document.querySelector('#deptOverheadCosts').value = ''
+            // redirect
             window.location = './depmts'
           })
           .catch(e => console.error(e))

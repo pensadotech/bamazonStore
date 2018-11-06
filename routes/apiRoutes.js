@@ -2,5 +2,5 @@
 module.exports = (app) => {  
   require('./departmentRoutes')(app)
   require('./productRoutes')(app)
-  require('./orderRoutes')(app)
+  require('./cartRoutes')(app)
 }

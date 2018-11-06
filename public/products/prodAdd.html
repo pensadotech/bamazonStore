@@ -105,10 +105,10 @@
     const cancelAction = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
-      // relocate (how to pass a parameter on new location? )
+      // redirect
       window.location = './prods'
     }
-    
+
     // validate and create product 
     const createProd = () => {
       // override form-submit default behavior
@@ -162,20 +162,16 @@
               'Content-Type': 'application/json ; charset=utf-8'
             },
             body: JSON.stringify({
-              Name: prodName,
-              invenntory: prodStocknum,
+              name: prodName,
+              inventoryNum: prodStocknum,
               description: prodDescr,
-              Price: prodPrice,
-              StockQty: prodStockQty,
+              price: prodPrice,
+              stockQty: prodStockQty,
               departmentId: deptId
             })
           })
           .then(r => {
-            document.querySelector('#prodName').value = ''
-            document.querySelector('#prodStocknum').value = ''
-            document.querySelector('#prodDescr').value = ''
-            document.querySelector('#prodPrice').value = ''
-            document.querySelector('#prodStockQty').value = ''
+            // redirect
             window.location = './prods'
           })
           .catch(e => console.error(e))
@@ -183,7 +179,7 @@
       } // if not error
 
     }
-    
+
     // geat all departments and present in selector
     const getDepartments = () => {
       fetch('/depts')
@@ -195,11 +191,11 @@
             // add department to array
             deptArr.push({
               id: dept.id,
-              name: dept.Name
+              name: dept.name
             })
             // make it an option in selector
             let listOption = document.createElement('option')
-            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.Name}</option>`
+            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.name}</option>`
             document.querySelector('#deptList').appendChild(listOption)
           });
         })
@@ -208,7 +204,7 @@
 
     // get all departments and polulate selector
     getDepartments()
-   
+
     // Extartd departent id for department arrya
     function getDeptId(deptName) {
       let deptId = undefined

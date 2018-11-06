@@ -66,7 +66,7 @@
           <!-- Nothing here (need to do a shift 5 instead) -->
         </div>
         <div class="col-sm-4">
-          <button class="btn btn-primary" onclick="">View Cart</button>
+          <button class="btn btn-primary" onclick="viewOrder()">View Cart</button>
           <input id="searchProduct" type="text" name="product" placehoder="item to search">
           <button onclick="findTodo()"><i class="fas fa-search"></i></button>
         </div>
@@ -75,17 +75,10 @@
   </div>
 
   <div class="container">
-
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-12">
         <h4>Products</h4>
         <ul id="prodsList">
-          <!-- Products will be luisted here -->
-        </ul>
-      </div>
-      <div class="col-sm-6">
-        <h4>Cart</h4>
-        <ul id="cartList">
           <!-- Products will be luisted here -->
         </ul>
       </div>
@@ -108,6 +101,7 @@
   <script>
     // keep a collection of incoming departments
     let deptArr = []
+    let currentCart = getPendingCart()
 
     const getDepartments = () => {
       fetch('/depts')
@@ -123,16 +117,17 @@
             // add department to array
             deptArr.push({
               id: dept.id,
-              name: dept.Name
+              name: dept.name
             })
             // add department name to selector
             let listOption = document.createElement('option')
-            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.Name}</option>`
+            listOption.innerHTML = `<option data-value="${dept.Id}">${dept.name}</option>`
             document.querySelector('#deptList').appendChild(listOption)
           });
         })
         .catch(e => console.error(e))
     }
+
 
     const getProducts = () => {
 
@@ -144,21 +139,28 @@
             let listItem = document.createElement('li')
             listItem.innerHTML =
               ` <div class="row">
-             <div class="col-sm-9">                             
-                <div class="card">
-                 <div class="card-body">
-                   <h5 class="card-title">Name: ${product.Name}</h5>
-                   <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.invenntory}</h6>
-                   <p class="card-text">Description: ${product.description}</p>
-                   <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.Price} / Stock: ${product.StockQty}</p> 
+                 <div class="col-sm-10">                             
+                   <div class="card">
+                     <div class="card-body">
+                      <h5 class="card-title">Name: ${product.name}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.inventoryNum}</h6>
+                      <p class="card-text">Description: ${product.description}</p>
+                      <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.price} / Stock: ${product.stockQty}</p> 
+                     </div>
+                   </div>
+                 </div>
+                 <div class="col-sm-2">
+                   <form>
+                     <div class="form-group">
+                       <label for="item${product.id}" class='d-inline'>Qty:</label>
+                       <input type="number" class="form-control d-inline" name="item${product.id}" id="item${product.id}" min="1" value="1">
+                     </div>
+                    <button id="cartBnt" class="btn btn-primary" value=${product.id} data-value='${JSON.stringify(product)}'>Add to Cart</button>
+                   </form>
                 </div>
-               </div>
              </div>
-             <div class="col-sm-3">
-                <button id="cartBnt" class="btn btn-primary" value=${product.id}>Add to Cart</button>
-             </div>
-        </div>
-        `
+            `
+
             document.querySelector('#prodsList').appendChild(listItem)
           });
         })
@@ -176,29 +178,104 @@
             listItem.innerHTML =
               ` <div class="row">
                   <div class="col-sm-9">                             
-                     <div class="card">
-                       <div class="card-body">
-                         <h5 class="card-title">Name: ${product.Name}</h5>
-                         <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.invenntory}</h6>
-                         <p class="card-text">Description: ${product.description}</p>
-                         <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.Price} / Stock: ${product.StockQty}</p> 
-                       </div>
+                   <div class="card">
+                     <div class="card-body">
+                       <h5 class="card-title">Name: ${product.name}</h5>
+                       <h6 class="card-subtitle mb-2 text-muted">Stock Number: ${product.inventoryNum}</h6>
+                       <p class="card-text">Description: ${product.description}</p>
+                       <p class="card-text">Depmt: ${getDeptName(product.departmentId)} /  Price($): ${product.price} / Stock: ${product.stockQty}</p> 
                     </div>
+                  </div>
                  </div>
-               <div class="col-sm-3">
-                  <button id="cartBnt" class="btn btn-primary" value=${product.id}>Add to Cart</button>
+                 <div class="col-sm-3">
+                   <button id="cartBnt" class="btn btn-primary" value=${product.id}>Add to Cart</button>
+                 </div>
                </div>
-             </div>
              `
             document.querySelector('#prodsList').appendChild(listItem)
           });
         })
         .catch(e => console.error(e))
     }
+    document.addEventListener('click', e => {
+      // override from-submit default behavior
+      event.preventDefault()
+
+      // Process selection 
+      if (e.target && e.target.id === 'cartBnt') {
+        // get product data:
+        // 1. get associated product with btn selection
+        let product = JSON.parse(e.target.getAttribute("data-value"))
+        // 2. retreive quantity
+        let qty = document.querySelector(`#item${e.target.value}`).value
+
+        if (currentCart === null) {
+          // create cart a+ selected item
+          createCart(product, qty)
+        } else {
+          // create selected item only 
+          createCartItem(currentCart, product, qty)
+        }
+      } // if (e.target ...
+      else if (e.target.getAttribute("class") === 'nav-link') {
+        // it is a nav link, redirect to the link
+        window.location = e.target.getAttribute("href")
+      }
+
+    })
+
+    const createCart = (product, qty) => {
+      // create cart
+      fetch('/carts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json ; charset=utf-8'
+          },
+          body: JSON.stringify({
+            orderDate: new Date()
+          })
+        })
+        .then(r => r.json())
+        .then(r => {
+          // Save create Cart in a variable (r is created cart)
+          currentCart = r
+          // save current cart in the session
+          storePendingCart(currentCart)
+          // create cart item  
+          createCartItem(currentCart, product, qty)
+        })
+        .catch(e => console.error(e))
+    }
+
+    const createCartItem = (cart, product, qty) => {
+       
+      console.log("cart-id:",cart.id) 
+
+      // add item to cart
+      fetch('/cartitems', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json ; charset=utf-8'
+          },
+          body: JSON.stringify({
+            cartId: cart.id,
+            deptId : product.departmentId,
+            productId: product.id,
+            prodName: product.name,
+            inventoryNum: product.inventoryNum,
+            description: product.description,
+            unitPrice: product.price,
+            qty: qty
+          })
+        })
+        .then(r => {
+          console.log(r)
+        })
+        .catch(e => console.error(e))
+    }
 
     // Filter prod in screen by deparment
     const selectChange = () => {
-
       if (document.getElementById("deptList").value === 'All Departments') {
         getProducts()
       } else {
@@ -207,10 +284,30 @@
       }
     }
 
+    const viewOrder = () => {
+      // override form-sumbit defautl behavior
+      event.preventDefault()
+      // view order
+      window.location = `./carts`
+    }
+
     getDepartments()
     getProducts()
 
+    console.log("current cart:")
+    console.log(currentCart)
+
+
     // General funciton................................................
+    function getPendingCart() {
+      let pendCart = sessionStorage.getItem("bamazonCart")
+      return JSON.parse(pendCart)
+    }
+
+    function storePendingCart(cart) {
+      sessionStorage.setItem("bamazonCart", JSON.stringify(cart))
+    }
+
     function getDeptId(deptName) {
       let deptId = undefined
       deptArr.forEach(dept => {

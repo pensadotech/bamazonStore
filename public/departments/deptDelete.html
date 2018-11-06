@@ -76,7 +76,7 @@
     const cancelAction = () => {
       // oveeride form-submit defualt behavior
       event.preventDefault()
-      // relocate (how to pass a parameter on new location? )
+      // redirect
       window.location = './depmts'
     }
 
@@ -91,6 +91,7 @@
           method: 'DELETE'
         })
         .then(r => {
+          // redirect
           window.location = './depmts'
         })
         .catch(e => console.error(e))
@@ -107,8 +108,8 @@
                    <div class="col-sm-9">                             
                       <div class="card">
                        <div class="card-body">
-                         <h5 class="card-title">Department: ${r.Name}</h5>
-                         <p class="card-text">Overhead Costs: ${r.OverheadCosts}</p> 
+                         <h5 class="card-title">Department: ${r.name}</h5>
+                         <p class="card-text">Overhead Costs: ${r.overheadCosts}</p> 
                       </div>
                      </div>
                    </div>
@@ -122,7 +123,7 @@
 
     let selectedId = getUrlParameter()
     getSelectedItem(selectedId)
-    
+
     // general functions ----------------------------------------------------
     function getUrlParameter() {
       var vars = {};

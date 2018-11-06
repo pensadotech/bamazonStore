@@ -2,12 +2,12 @@
 module.exports = (sequelize, DataTypes) => {
 
   let Product = sequelize.define('products', {
-    Name: DataTypes.STRING,
-    invenntory: DataTypes.STRING,
+    name: DataTypes.STRING,
+    inventoryNum: DataTypes.STRING,
     description: DataTypes.STRING,
-    Price: DataTypes.FLOAT,
-    StockQty: DataTypes.INTEGER,
-    TotalSales: DataTypes.FLOAT
+    price: DataTypes.FLOAT,
+    stockQty: DataTypes.INTEGER,
+    totalSales: DataTypes.FLOAT
   }, {
     // Model tableName will be the same as the model name instead of being pluralized
     freezeTableName: true
@@ -15,10 +15,8 @@ module.exports = (sequelize, DataTypes) => {
 
   // Provide point for associations 
   Product.associate = (db) => {
-    // Product has one-to-many relationship with Order-Items
-    db.products.hasMany(db.orderitems, {
-      as: 'Orderitems'
-    })
+    // product has a one-to-many relationship with cart-items
+    db.products.hasMany(db.cartitems, { as: 'CartItems' })
   }
 
   return Product
