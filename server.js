@@ -23,8 +23,3 @@ require('./models').sequelize.sync().then(() => {
   console.log(`Listening at http://localhost:${PORT}`)
   })
 })
-
-// const PORT = process.env.PORT || 3010
-// app.listen(PORT, () => {
-// console.log(`Listening at http://localhost:${PORT}`)
-// })
