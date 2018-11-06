@@ -96,8 +96,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
 
-  <script src="./scripts/app.js"></script>
-
   <script>
     // keep a collection of incoming departments
     let deptArr = []
@@ -208,7 +206,7 @@
         let product = JSON.parse(e.target.getAttribute("data-value"))
         // 2. retreive quantity
         let qty = document.querySelector(`#item${e.target.value}`).value
-
+        
         if (currentCart === null) {
           // create cart a+ selected item
           createCart(product, qty)
@@ -249,8 +247,6 @@
 
     const createCartItem = (cart, product, qty) => {
        
-      console.log("cart-id:",cart.id) 
-
       // add item to cart
       fetch('/cartitems', {
           method: 'POST',
@@ -269,7 +265,7 @@
           })
         })
         .then(r => {
-          console.log(r)
+          // nothing
         })
         .catch(e => console.error(e))
     }
@@ -294,8 +290,8 @@
     getDepartments()
     getProducts()
 
-    console.log("current cart:")
-    console.log(currentCart)
+    // console.log("current cart:")
+    // console.log(currentCart)
 
 
     // General funciton................................................
@@ -311,7 +307,6 @@
     function getDeptId(deptName) {
       let deptId = undefined
       deptArr.forEach(dept => {
-        console.log(dept)
         if (deptName === dept.name) {
           deptId = dept.id
         }

@@ -71,8 +71,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
 
-  <script src="../scripts/app.js"></script>
-
   <script>
     // keep a collection of incoming departments
     let deptArr = []
@@ -152,7 +150,6 @@
     function getDeptId(deptName) {
       let deptId = undefined
       deptArr.forEach(dept => {
-        console.log(dept)
         if (deptName === dept.name) {
           deptId = dept.id
         }
@@ -164,7 +161,6 @@
       deptId = parseInt(deptId)
       let deptName = undefined
       deptArr.forEach(dept => {
-        console.log(dept)
         if (deptId === parseInt(dept.id)) {
           deptName = dept.name
         }
