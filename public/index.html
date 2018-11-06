@@ -208,7 +208,7 @@
         let product = JSON.parse(e.target.getAttribute("data-value"))
         // 2. retreive quantity
         let qty = document.querySelector(`#item${e.target.value}`).value
-
+        
         if (currentCart === null) {
           // create cart a+ selected item
           createCart(product, qty)
