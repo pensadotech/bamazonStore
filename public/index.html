@@ -175,7 +175,7 @@
             let listItem = document.createElement('li')
             listItem.innerHTML =
               ` <div class="row">
-                  <div class="col-sm-9">                             
+                  <div class="col-sm-10">                             
                    <div class="card">
                      <div class="card-body">
                        <h5 class="card-title">Name: ${product.name}</h5>
@@ -185,9 +185,15 @@
                     </div>
                   </div>
                  </div>
-                 <div class="col-sm-3">
-                   <button id="cartBnt" class="btn btn-primary" value=${product.id}>Add to Cart</button>
-                 </div>
+                 <div class="col-sm-2">
+                   <form>
+                     <div class="form-group">
+                       <label for="item${product.id}" class='d-inline'>Qty:</label>
+                       <input type="number" class="form-control d-inline" name="item${product.id}" id="item${product.id}" min="1" value="1">
+                     </div>
+                    <button id="cartBnt" class="btn btn-primary" value=${product.id} data-value='${JSON.stringify(product)}'>Add to Cart</button>
+                   </form>
+                </div>
                </div>
              `
             document.querySelector('#prodsList').appendChild(listItem)
